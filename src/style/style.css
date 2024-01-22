@@ -1,50 +1,76 @@
-* {
-	margin: 0;
-	padding: 0;
-}
-#player-box {
-	max-width: 1170px;
-	width: 100%;
-	margin: 0 auto;
-}
-#player-box div {
-	margin: 10px;
-}
-.players-container {
-	display: flex;
-	align-items: center;
-	justify-content: space-evenly;
-	margin-bottom: 50px;
-}
-.player-settings {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-}
-.player-setting__title {
-	font-weight: bold;
-}
-.player-settings__title input {
-	padding: 5px;
-	margin: 5px;
-}
-.win__case {
-	display: none;
-}
-.game-settings {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	flex-direction: column;
-	margin: 0 auto;
+@import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;0,1000;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900;1,1000&display=swap');
+
+body,
+button,
+input {
+  font-family: 'Nunito', sans-serif;
 }
 
-.table-board {
-	display: flex;
-	justify-content: space-around;
+#p1-win,
+#p2-win {
+  display: none;
 }
+
+#game {
+  display:flex;
+  justify-content: space-around;
+}
+
+/* game board table */
+
 #board td {
-	width: 50px;
-	height: 50px;
-	border: solid 1px #666;
+  width: 50px;
+  height: 50px;
+  border: solid 1px #666;
+}
+
+/* pieces are div within game table cells: draw as colored circles */
+
+.piece {
+  margin: 5px;
+  width: 80%;
+  height: 80%;
+  border-radius: 50%;
+}
+
+/* column-top is table row of clickable areas for each column */
+
+#column-top td {
+  border: dashed 1px lightgray;
+}
+
+#column-top td:hover {
+  background-color: gold;
+}
+
+#player-form-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+#player-form-container div {
+  margin: 10px;
+}
+
+#player-settings-container {
+  display: flex;
+  justify-content: space-around;
+}
+
+#player-settings {
+  display:flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+
+#player-settings input {
+  padding: 5px;
+  margin: 5px;
+}
+
+#player-settings-title {
+  font-weight: bold;
+
 }
