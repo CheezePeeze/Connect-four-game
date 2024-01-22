@@ -1,0 +1,50 @@
+* {
+	margin: 0;
+	padding: 0;
+}
+#player-box {
+	max-width: 1170px;
+	width: 100%;
+	margin: 0 auto;
+}
+#player-box div {
+	margin: 10px;
+}
+.players-container {
+	display: flex;
+	align-items: center;
+	justify-content: space-evenly;
+	margin-bottom: 50px;
+}
+.player-settings {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+.player-setting__title {
+	font-weight: bold;
+}
+.player-settings__title input {
+	padding: 5px;
+	margin: 5px;
+}
+.win__case {
+	display: none;
+}
+.game-settings {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+	margin: 0 auto;
+}
+
+.table-board {
+	display: flex;
+	justify-content: space-around;
+}
+#board td {
+	width: 50px;
+	height: 50px;
+	border: solid 1px #666;
+}

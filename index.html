@@ -11,8 +11,8 @@
 		<form id="player-box">
 			<div class="players-container">
 				<div class="player-settings">
-					<span class="player1-setting__title">Player 1</span>
-					<span class="player1-win__case">🎉</span>
+					<span id="player1" class="player-setting__title">Player 1</span>
+					<span class="player win__case">🎉</span>
 					<label for="">Name</label>
 					<input type="text" placeholder="Name" />
 					<label>Color</label>
@@ -24,8 +24,8 @@
 					/>
 				</div>
 				<div class="player-settings">
-					<span class="player2-setting__title">Player 2</span>
-					<span class="player2-win__case">🎉</span>
+					<span id="player2" class="player-setting__title">Player 2</span>
+					<span class="player win__case">🎉</span>
 					<label for="">Name</label>
 					<input type="text" placeholder="Name" />
 					<label>Color</label>
@@ -33,15 +33,17 @@
 						id="player2-color"
 						type="color"
 						placeholder="color"
-						value="#0089fc"
+						value="#9889fc"
 					/>
 				</div>
 			</div>
-			<div id="button-container">
-				<button id="start-game">New Game</button>
-			</div>
-			<div>
-				<p id="outcome-message"> </p>
+			<div class="game-settings">
+				<div id="button-container">
+					<button id="start-game">New Game</button>
+				</div>
+				<div>
+					<p id="outcome-message"> </p>
+				</div>
 			</div>
 		</form>
 
