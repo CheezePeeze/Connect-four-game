@@ -1,76 +1,159 @@
+/* Global Styles */
 @import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;0,1000;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900;1,1000&display=swap');
 
-body,
+body {
+	margin: 0;
+	padding: 0;
+	font-family: 'Nunito', sans-serif;
+	background-color: #f4f4f4;
+}
+
 button,
 input {
-  font-family: 'Nunito', sans-serif;
+	font-family: 'Nunito', sans-serif;
+}
+
+/* Game Styles */
+#p1-win,
+#p2-win {
+	display: none;
+}
+
+#game {
+	display: flex;
+	justify-content: space-around;
+	background: linear-gradient(to bottom right, #3498db, #45a049);
+	border-radius: 15px;
+	box-shadow: 0 0 30px rgba(0, 0, 0, 0.3);
+	padding: 30px;
+	color: white;
+}
+
+/* Game Board Styles */
+#board {
+	background-color: rgba(255, 255, 255, 0.95);
+	border-radius: 15px;
+	box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+}
+
+#board td {
+	width: 60px;
+	height: 60px;
+	border: solid 1px #ccc;
+	border-radius: 10px;
+	background-color: #fff;
+	transition: background-color 0.3s ease-in-out;
+}
+
+#board td:hover {
+	background-color: #f0f0f0;
+	width: 30px;
+	height: 30%;
+	margin: 5px;
+	border-radius: 50%;
+}
+
+/* Pieces Styles */
+.piece {
+	margin: 5px;
+	width: 80%;
+	height: 80%;
+	border-radius: 50%;
+}
+
+/* Column Top Styles */
+#column-top td {
+	border: dashed 1px lightgray;
+	transition: transform 0.5s ease-in-out, margin-top 2s ease-in-out;
+}
+
+#column-top td:hover {
+	background-color: #8b4513;
+	transform: translateY(15px);
+}
+
+/* Player Form Styles */
+#player-form {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 100vh;
+}
+
+#player-form-container {
+	background-color: #fff;
+	padding: 30px;
+	border-radius: 15px;
+	box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
+#player-settings-container {
+	display: flex;
+	justify-content: space-around;
+}
+
+#player-settings {
+	margin: 20px;
+	padding: 20px;
+	background-color: #f0f0f0;
+	border-radius: 10px;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+#player-settings div {
+	margin-bottom: 15px;
+}
+
+#player1-settings-title,
+#player2-settings-title {
+	font-size: 20px;
+	font-weight: bold;
+	color: #3498db;
 }
 
 #p1-win,
 #p2-win {
-  display: none;
+	margin-left: 8px;
+	color: #45a049;
 }
 
-#game {
-  display:flex;
-  justify-content: space-around;
+label {
+	display: block;
+	margin-bottom: 8px;
 }
 
-/* game board table */
-
-#board td {
-  width: 50px;
-  height: 50px;
-  border: solid 1px #666;
+input {
+	width: 100%;
+	padding: 12px;
+	box-sizing: border-box;
+	margin-bottom: 15px;
+	border: 1px solid #ccc;
+	border-radius: 8px;
 }
 
-/* pieces are div within game table cells: draw as colored circles */
-
-.piece {
-  margin: 5px;
-  width: 80%;
-  height: 80%;
-  border-radius: 50%;
+#button-container {
+	text-align: center;
 }
 
-/* column-top is table row of clickable areas for each column */
-
-#column-top td {
-  border: dashed 1px lightgray;
+#start-game {
+	background-color: #4caf50;
+	color: #fff;
+	padding: 18px 30px;
+	font-size: 18px;
+	border: none;
+	border-radius: 8px;
+	cursor: pointer;
+	transition: background-color 0.3s ease-in-out;
 }
 
-#column-top td:hover {
-  background-color: gold;
+#start-game:hover {
+	background-color: #45a049;
 }
 
-#player-form-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-bottom: 30px;
-}
-
-#player-form-container div {
-  margin: 10px;
-}
-
-#player-settings-container {
-  display: flex;
-  justify-content: space-around;
-}
-
-#player-settings {
-  display:flex;
-  flex-direction: column;
-  justify-content: space-evenly;
-}
-
-#player-settings input {
-  padding: 5px;
-  margin: 5px;
-}
-
-#player-settings-title {
-  font-weight: bold;
-
+#outcome-message {
+	text-align: center;
+	margin-top: 30px;
+	font-weight: bold;
+	font-size: 20px;
+	color: #3498db;
 }
