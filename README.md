@@ -9,30 +9,4 @@ To complete this project I created JavaScript classes (Game, Board, Space, Playe
 ## Techniques and concepts
 - JavaScript classes used to create objects and organize code.
 
-## Code example
-```javascript
-// Finds Space object to drop Token into, and drops Token.
-playToken(){
-  let spaces = this.board.spaces;
-  let activeToken = this.activePlayer.activeToken;
-  let targetColumn = spaces[activeToken.columnLocation];
-  let targetSpace = null;
-  //
-  for(let space of targetColumn) {
-    if(space.token === null) {
-      targetSpace = space;
-    }
-  }
 
-  if(targetSpace !== null) {
-    const game = this;
-    game.ready = false;
-    activeToken.drop(targetSpace, function() {
-      game.updateGameState(activeToken, targetSpace);
-    });
-  }
-}
-```
-
-## Acknowledgements
-This project was built as part of the [Full Stack JavaScript Techdegree](https://join.teamtreehouse.com/techdegree/) offered by [Treehouse](https://teamtreehouse.com) :raised_hands:
