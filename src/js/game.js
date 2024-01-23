@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 /** Connect Four
  *
@@ -8,7 +8,7 @@
  */
 
 class Game {
-	constructor(height = 6, width = 7, players) {
+	constructor(height, width, players) {
 		this.height = height;
 		this.width = width;
 		this.players = players;
@@ -43,18 +43,22 @@ class Game {
 	 * */
 
 	makeHtmlBoard() {
-		console.log('makeHtmlBoard called');
-		const htmlBoard = document.getElementById('board');
-		htmlBoard.innerHTML = '';
+		console.log("makeHtmlBoard called");
+		const htmlBoard = document.getElementById("board");
+		htmlBoard.innerHTML = "";
 
 		// make column tops (clickable area for adding a piece to that column)
-		const top = document.createElement('tr');
-		top.setAttribute('id', 'column-top');
-		top.addEventListener('click', this.boundHandleClick);
+		const top = document.createElement("tr");
+		top.setAttribute("id", "column-top");
+		top.addEventListener("click", this.boundHandleClick);
+		top.addEventListener("mouseover", this.handleColumnHover.bind(this));
+		top.addEventListener("mouseout", this.handleColumnHoverOut.bind(this));
 
 		for (let x = 0; x < this.width; x++) {
-			const headCell = document.createElement('td');
-			headCell.setAttribute('id', x);
+			const headCell = document.createElement("td");
+			headCell.setAttribute("id", x);
+			//Store the player color in a custom attribute
+			headCell.setAttribute("data-color", this.players[0].color);
 			top.append(headCell);
 		}
 
@@ -62,18 +66,33 @@ class Game {
 
 		// make main part of board
 		for (let y = 0; y < this.height; y++) {
-			const row = document.createElement('tr');
+			const row = document.createElement("tr");
 
 			for (let x = 0; x < this.width; x++) {
-				const cell = document.createElement('td');
-				cell.setAttribute('id', `c-${y}-${x}`);
+				const cell = document.createElement("td");
+				cell.setAttribute("id", `c-${y}-${x}`);
 				row.append(cell);
 			}
 
 			htmlBoard.append(row);
 		}
 	}
+	handleColumnHover(event) {
+		const x = +event.target.id;
+		const color = this.currPlayer.color;
+		// Update the hover color dynamically
+		document
+			.getElementById("column-top")
+			.querySelector(`[id="${x}"]`).style.backgroundColor = color;
+	}
+	handleColumnHoverOut(event) {
+		const x = +event.target.id;
 
+		// Reset the hover color
+		document
+			.getElementById("column-top")
+			.querySelector(`[id="${x}"]`).style.backgroundColor = "";
+	}
 	/** findSpotForCol: given column x, return top empty y (null if filled) */
 
 	findSpotForCol(x) {
@@ -88,35 +107,37 @@ class Game {
 	/** placeInTable: update DOM to place piece into HTML table of board */
 
 	placeInTable(y, x) {
-		const piece = document.createElement('div');
-		piece.classList.add('piece');
+		const piece = document.createElement("div");
+		piece.classList.add("piece");
 		piece.classList.add(`p${this.currPlayer.number}`);
 		piece.style.backgroundColor = this.currPlayer.color;
 
 		const spot = document.getElementById(`c-${y}-${x}`);
-		console.log('spot', spot);
-		console.log('x', x);
-		console.log('y', y);
-		console.log('board', this.board);
+		console.log("spot", spot);
+		console.log("x", x);
+		console.log("y", y);
+		console.log("board", this.board);
 		spot.append(piece);
 	}
 
 	/** endGame: announce game end */
 
 	endGame(msg) {
-		if (msg !== 'Tie!') {
-			const winFlag = document.getElementById(`p${this.currPlayer.number}-win`);
-			winFlag.style.display = 'inline';
+		if (msg !== "Tie!") {
+			const winFlag = document.getElementById(
+				`p${this.currPlayer.number}-win`
+			);
+			winFlag.style.display = "inline";
 		}
 		// inserting the message into the <p> tag
-		const outcomeMessage = document.getElementById('outcome-message');
+		const outcomeMessage = document.getElementById("outcome-message");
 		outcomeMessage.innerText = msg;
 
-		console.log('removing event listener from this: ', this);
+		console.log("removing event listener from this: ", this);
 
-		//removing handler in order to disable game logic
-		const top = document.getElementById('column-top');
-		top.removeEventListener('click', this.boundHandleClick);
+		//removing handler when one of the player has won (disable turn)
+		const top = document.getElementById("column-top");
+		top.removeEventListener("click", this.boundHandleClick);
 	}
 
 	/**
@@ -125,24 +146,24 @@ class Game {
 	 */
 
 	resetPlayers(players) {
-		document.getElementById('player1-settings-title').innerText =
+		document.getElementById("player1-settings-title").innerText =
 			players[0].name;
-		document.getElementById('player2-settings-title').innerText =
+		document.getElementById("player2-settings-title").innerText =
 			players[1].name;
 
-		document.getElementById('p1-win').style.display = 'none';
-		document.getElementById('p2-win').style.display = 'none';
+		document.getElementById("p1-win").style.display = "none";
+		document.getElementById("p2-win").style.display = "none";
 	}
 
 	/** handleClick: handle click of column top to play piece */
 
 	handleClick(evt) {
-		console.log('handleClick', 'evt: ', evt);
+		console.log("handleClick", "evt: ", evt);
 		// get x from ID of clicked cell
 		const x = +evt.target.id;
 
 		// get next spot in column (if none, ignore click)
-		console.log('this: ', this);
+		console.log("this: ", this);
 		const y = this.findSpotForCol(x);
 		if (y === null) {
 			return;
@@ -152,7 +173,7 @@ class Game {
 		this.board[y][x] = this.currPlayer.number;
 		this.placeInTable(y, x);
 
-		console.log('about to checkForWin');
+		console.log("about to checkForWin");
 		// check for win
 		if (this.checkForWin()) {
 			return this.endGame(`${this.currPlayer.name} won!`);
@@ -165,7 +186,7 @@ class Game {
 		//  If all cells in all rows have truthy values (meaning they are not null, undefined, or falsy),
 		//  then "every" returns true. This means that "every" cell in "every" row is filled.
 		if (this.board.every((row) => row.every((cell) => cell))) {
-			return this.endGame('Tie!');
+			return this.endGame("Tie!");
 		}
 
 		// switch players
@@ -190,7 +211,7 @@ class Game {
 					this.board[y][x] === this.currPlayer.number
 			);
 		}
-		console.log('this', this);
+		console.log("this", this);
 
 		for (let y = 0; y < this.height; y++) {
 			for (let x = 0; x < this.width; x++) {
@@ -236,29 +257,29 @@ class Game {
 }
 
 /* Attach Click Event to New Game Button ------------------------------------ */
-const newGameButton = document.getElementById('start-game');
-newGameButton.addEventListener('click', function (event) {
+const newGameButton = document.getElementById("start-game");
+newGameButton.addEventListener("click", function (event) {
 	event.preventDefault();
 
-	let p1name = document.getElementById('player1-name');
-	const p1color = document.getElementById('player1-color');
-	console.log('p1name: ', p1name);
-	console.log('p1color: ', p1color);
+	let p1name = document.getElementById("player1-name");
+	const p1color = document.getElementById("player1-color");
+	console.log("p1name: ", p1name);
+	console.log("p1color: ", p1color);
 
-	let p2name = document.getElementById('player2-name');
-	const p2color = document.getElementById('player2-color');
-	console.log('p2name: ', p2name);
-	console.log('p2color: ', p2color);
+	let p2name = document.getElementById("player2-name");
+	const p2color = document.getElementById("player2-color");
+	console.log("p2name: ", p2name);
+	console.log("p2color: ", p2color);
 
-	if (!p1name.value) p1name = { value: 'P1' };
-	if (!p2name.value) p2name = { value: 'P2' };
+	if (!p1name.value) p1name = { value: "P1" };
+	if (!p2name.value) p2name = { value: "P2" };
 
-	console.log('p1name: ', p1name);
-	console.log('p2name: ', p2name);
+	console.log("p1name: ", p1name);
+	console.log("p2name: ", p2name);
 
 	const playerOne = new Player(p1name.value, p1color.value, 1);
 	const playerTwo = new Player(p2name.value, p2color.value, 2);
-	console.log('playerOne created: ', playerOne);
-	console.log('playerTwo created: ', playerTwo);
-	const newGame = new Game(6, 7, [playerOne, playerTwo]);
+	console.log("playerOne created: ", playerOne);
+	console.log("playerTwo created: ", playerTwo);
+	new Game(6, 7, [playerOne, playerTwo]);
 });
