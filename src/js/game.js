@@ -27,7 +27,7 @@ class Game {
 	 *
 	 */
 
-	// displays the rows and columns if they are empty(if was added a piece replaces null with the index )
+	// displays the rows and columns as an empty array(if was added a piece replaces null with the index )
 	makeBoard() {
 		for (let y = 0; y < this.height; y++) {
 			const row = [];
