@@ -73,7 +73,6 @@ class Game {
 				cell.setAttribute("id", `c-${y}-${x}`);
 				row.append(cell);
 			}
-
 			htmlBoard.append(row);
 		}
 	}
@@ -109,7 +108,7 @@ class Game {
 	placeInTable(y, x) {
 		const piece = document.createElement("div");
 		piece.classList.add("piece");
-		piece.classList.add(`p${this.currPlayer.number}`);
+		piece.classList.add(`p${this.currPlayer.id}`);
 		piece.style.backgroundColor = this.currPlayer.color;
 
 		const spot = document.getElementById(`c-${y}-${x}`);
@@ -125,7 +124,7 @@ class Game {
 	endGame(msg) {
 		if (msg !== "Tie!") {
 			const winFlag = document.getElementById(
-				`p${this.currPlayer.number}-win`
+				`p${this.currPlayer.id}-win`
 			);
 			winFlag.style.display = "inline";
 		}
@@ -156,46 +155,6 @@ class Game {
 	}
 
 	/** handleClick: handle click of column top to play piece */
-
-	handleClick(evt) {
-		console.log("handleClick", "evt: ", evt);
-		// get x from ID of clicked cell
-		const x = +evt.target.id;
-
-		// get next spot in column (if none, ignore click)
-		console.log("this: ", this);
-		const y = this.findSpotForCol(x);
-		if (y === null) {
-			return;
-		}
-
-		// place piece in board and add to HTML table
-		this.board[y][x] = this.currPlayer.number;
-		this.placeInTable(y, x);
-
-		console.log("about to checkForWin");
-		// check for win
-		if (this.checkForWin()) {
-			return this.endGame(`${this.currPlayer.name} won!`);
-		}
-		//
-		// check for tie ,
-		// first "every" iterates over each row of the board.
-		//second "every" iterates over each cell in that row.
-		// The condition cell => cell checks if each cell in the row has a truthy value.
-		//  If all cells in all rows have truthy values (meaning they are not null, undefined, or falsy),
-		//  then "every" returns true. This means that "every" cell in "every" row is filled.
-		if (this.board.every((row) => row.every((cell) => cell))) {
-			return this.endGame("Tie!");
-		}
-
-		// switch players
-		this.currPlayer =
-			this.currPlayer.number === 1 ? this.players[1] : this.players[0];
-	}
-
-	/** checkForWin: check board cell-by-cell for "does a win start here?" */
-
 	checkForWin() {
 		function _win(cells) {
 			// Check four cells to see if they're all color of current player
@@ -208,7 +167,7 @@ class Game {
 					y < this.height &&
 					x >= 0 &&
 					x < this.width &&
-					this.board[y][x] === this.currPlayer.number
+					this.board[y][x] === this.currPlayer.id
 			);
 		}
 		console.log("this", this);
@@ -254,6 +213,44 @@ class Game {
 			}
 		}
 	}
+	handleClick(event) {
+		console.log("handleClick", "evt: ", event);
+		// get x from ID of clicked cell
+		const x = +event.target.id;
+
+		// get next spot in column (if none, ignore click)
+		console.log("this: ", this);
+		const y = this.findSpotForCol(x);
+		if (y === null) {
+			return;
+		}
+
+		// place piece in board and add to HTML table
+		this.board[y][x] = this.currPlayer.id;
+		this.placeInTable(y, x);
+
+		console.log("about to checkForWin");
+		// check for win
+		if (this.checkForWin()) {
+			return this.endGame(`${this.currPlayer.name} won!`);
+		}
+		//
+		// check for tie ,
+		// first "every" iterates over each row of the board.
+		//second "every" iterates over each cell in that row.
+		// The condition cell => cell checks if each cell in the row has a truthy value.
+		//  If all cells in all rows have truthy values (meaning they are not null, undefined, or falsy),
+		//  then "every" returns true. This means that "every" cell in "every" row is filled.
+		if (this.board.every((row) => row.every((cell) => cell))) {
+			return this.endGame("Tie!");
+		}
+
+		// switch players
+		this.currPlayer =
+			this.currPlayer.id === 1 ? this.players[1] : this.players[0];
+	}
+
+	/** checkForWin: check board cell-by-cell for "does a win start here?" */
 }
 
 /* Attach Click Event to New Game Button ------------------------------------ */
@@ -271,8 +268,8 @@ newGameButton.addEventListener("click", function (event) {
 	console.log("p2name: ", p2name);
 	console.log("p2color: ", p2color);
 
-	if (!p1name.value) p1name = { value: "P1" };
-	if (!p2name.value) p2name = { value: "P2" };
+	if (!p1name.value) p1name = { value: "Player 1" };
+	if (!p2name.value) p2name = { value: "Player 2" };
 
 	console.log("p1name: ", p1name);
 	console.log("p2name: ", p2name);
