@@ -1,3 +1,5 @@
+/* Attach Click Event to New Game Button ------------------------------------ */
+
 const newGameButton = document.getElementById("start-game");
 newGameButton.addEventListener("click", function (event) {
 	event.preventDefault();

@@ -53,6 +53,7 @@ class Game {
 		top.addEventListener("click", this.boundHandleClick);
 		// bind(this) is used to create a new function where this inside handleClick
 		// will always refer to the instance of the class.
+		// top.addEventListener("mouseover", (event) => this.handleColumnHover(event));
 		top.addEventListener("mouseover", this.handleColumnHover.bind(this));
 		top.addEventListener("mouseout", this.handleColumnHoverOut.bind(this));
 
@@ -121,24 +122,6 @@ class Game {
 
 	/** endGame: announce game end */
 
-	endGame(msg) {
-		if (msg !== "Tie!") {
-			const winFlag = document.getElementById(
-				`p${this.currPlayer.id}-win`
-			);
-			winFlag.style.display = "inline";
-		}
-		// inserting the message into the <p> tag
-		const outcomeMessage = document.getElementById("outcome-message");
-		outcomeMessage.innerText = msg;
-
-		console.log("removing event listener from this: ", this);
-
-		//removing handler when one of the player has won (disable turn)
-		const top = document.getElementById("column-top");
-		top.removeEventListener("click", this.boundHandleClick);
-	}
-
 	/**
 	 * Reset the appearance of the players on the game board (win flags and
 	 * player names)
@@ -154,7 +137,8 @@ class Game {
 		document.getElementById("p2-win").style.display = "none";
 	}
 
-	/** handleClick: handle click of column top to play piece */
+	/** checkForWin: check board cell-by-cell for "does a win start here?" */
+
 	checkForWin() {
 		function _win(cells) {
 			// Check four cells to see if they're all color of current player
@@ -186,13 +170,13 @@ class Game {
 					[y + 2, x],
 					[y + 3, x],
 				];
-				const diagDR = [
+				const diagR = [
 					[y, x],
 					[y + 1, x + 1],
 					[y + 2, x + 2],
 					[y + 3, x + 3],
 				];
-				const diagDL = [
+				const diagL = [
 					[y, x],
 					[y + 1, x - 1],
 					[y + 2, x - 2],
@@ -204,14 +188,16 @@ class Game {
 				if (
 					_win.call(this, horiz) ||
 					_win.call(this, vert) ||
-					_win.call(this, diagDR) ||
-					_win.call(this, diagDL)
+					_win.call(this, diagR) ||
+					_win.call(this, diagL)
 				) {
 					return true;
 				}
 			}
 		}
 	}
+	/** handleClick: handle click of column top to play piece */
+
 	handleClick(event) {
 		console.log("handleClick", "evt: ", event);
 		// get x from ID of clicked cell
@@ -248,8 +234,22 @@ class Game {
 		this.currPlayer =
 			this.currPlayer.id === 1 ? this.players[1] : this.players[0];
 	}
+	endGame(msg) {
+		if (msg !== "Tie!") {
+			const winFlag = document.getElementById(
+				`p${this.currPlayer.id}-win`
+			);
+			winFlag.style.display = "inline";
+		}
+		// inserting the message into the <p> tag
+		const outcomeMessage = document.getElementById("outcome-message");
+		outcomeMessage.innerText = msg;
 
-	/** checkForWin: check board cell-by-cell for "does a win start here?" */
+		console.log("removing event listener from this: ", this);
+
+		//removing handler when one of the player has won (disable turn)
+		const top = document.getElementById("column-top");
+		top.removeEventListener("click", this.boundHandleClick);
+	}
 }
 
-/* Attach Click Event to New Game Button ------------------------------------ */
